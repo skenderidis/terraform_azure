@@ -9,6 +9,8 @@ PREFIX="$TF_VAR_prefix"
 
 start_time=$(date +%s)  # Get the start time
 echo "Sending Declaration"
+echo $URL
+echo $JSON_FILE
 # Send initial request with basic authentication
 HTTP_CODE=$(curl -ks --output ${PREFIX}-temp.json --write-out '%{http_code}' -u "$AUTH" --header 'Content-Type: application/json' --data @"$JSON_FILE" --request POST $URL)
 
