@@ -236,3 +236,43 @@ resource "null_resource" "do_bigip2" {
     command = "rm -rf secondary-bigip.json"
   }
 }
+
+
+resource "null_resource" "do_script_bigip01" {
+  provisioner "local-exec" {
+    command = "./do-script.sh"
+    environment = {
+      TF_VAR_bigip_ip  = module.bigip1.mgmtPublicIP
+      TF_VAR_username  = var.username
+      TF_VAR_password  = var.password
+      TF_VAR_json_file = "primary-bigip.json"
+      TF_VAR_prefix = "bigip01"
+    }
+  }
+  provisioner "local-exec" {
+    when    = destroy
+    command = "ls -la"
+    # This is where you can configure the BIGIQ revole API
+  }
+  depends_on = [null_resource.do_bigip1]
+}
+
+resource "null_resource" "do_script_bigip02" {
+  provisioner "local-exec" {
+    command = "./do-script.sh"
+    environment = {
+      TF_VAR_bigip_ip  = module.bigip2.mgmtPublicIP
+      TF_VAR_username  = var.username
+      TF_VAR_password  = var.password
+      TF_VAR_json_file = "secondary-bigip.json"
+      TF_VAR_prefix = "bigip02"
+    }
+  }
+  provisioner "local-exec" {
+    when    = destroy
+    command = "ls -la"
+    # This is where you can configure the BIGIQ revole API
+  }
+    depends_on = [null_resource.do_bigip2]
+
+}

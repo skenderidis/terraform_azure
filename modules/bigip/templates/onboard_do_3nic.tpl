@@ -50,7 +50,7 @@
       "network": "default",
       "mtu": 1500
      },
-    "internal}": {
+    "internal": {
       "class": "VLAN",
       "tag": 4094,
       "mtu": 1500,
